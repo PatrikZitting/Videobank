@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>AddVideo</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+    <h1 class="container text-center">Add a video</h1>
+	<div class="container text-center">
+		<form th:object="${video}" th:action="@{save}" action="#" method="post">
+		  	<label for="videoname">Name of the video</label>
+			<input type="text" id="videoname" th:field="*{videoname}" />
+			<div style="clear: both; display: block; height: 10px;"></div>
+		  	<label for="link">Reference to the video</label>
+			<input type="text" id="link" th:field="*{link}" />
+			<div style="clear: both; display: block; height: 10px;"></div>
+			<label for="catlist">Category</label>
+			 <select id="catlist" th:field="*{category}" class="form-control">
+       			<option th:each="category: ${categories}" th:value="${category.categoryid}" th:text="${category.name}"></option>
+    		</select>
+			<div style="clear: both; display: block; height: 10px;"></div>
+			<input type="submit" class="btn btn-success" value="Save"></input>
+		</form>
+		<button class="btn btn-danger" onclick="window.location.href='/videobank'">Back</button>
+	</div>
+</body>
+</html>

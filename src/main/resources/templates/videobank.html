@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+	<title>VideoBank</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />	
+</head>
+<body>
+    <h1 class="container text-center">VideoBank</h1>
+    <div class="container text-center">
+    	<h3>Welcome <span sec:authentication="name"></span></h3>
+    </div>
+    <div class="container text-center">
+    	<form th:action="@{/logout}" method="post">
+    	<input type="submit" value="Sign Out" class="btn btn-sm btn-danger"/>
+    	</form>
+    </div>
+    <table class="table table-striped">
+    	<tr>
+		    <th>Name of the video</th>
+		    <th>Reference to the video</th>
+		    <th>Category</th>
+		    <th sec:authorize="hasAuthority('ADMIN')"> </th>
+		    <th>Edit</th>
+		    <th>Play</th>
+		</tr>
+    	<tr th:each = "video : ${videos}">
+    		<td th:text="${video.videoname}"></td>
+    		<td th:text="${video.link}"></td>
+    		<td th:text="${video.category.name}"></td>
+    		<td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/delete/{id}(id=${video.id})}" class="btn btn-xs btn-danger">Delete</a></td>
+    		<td>
+    		<button sec:authorize="hasAuthority('ADMIN')" class="btn btn-danger" th:onclick="'window.location.href=\'/edit/' + ${video.id} + '\''">Edit</button>
+			</td>
+    		<td>
+            	<form th:action="@{/video}" method="get" target="_blank">
+    				<input type="hidden" name="videoLink" th:value="${video.link}" />
+    			<button type="submit" class="btn btn-success">Play</button>
+				</form>
+            </td>
+    	</tr>
+    </table>
+    <div class="container text-center">
+    	<button sec:authorize="hasAuthority('ADMIN')" class="btn btn-success" onclick="window.location.href='/add'">Add a video</button>
+    	<button sec:authorize="hasAuthority('ADMIN')" class="btn btn-danger" onclick="window.location.href='/categorylist'">List of categories</button>
+    </div>
+</body>
+</html>
